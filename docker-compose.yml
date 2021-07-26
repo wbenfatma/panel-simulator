@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+    nginx-proxy:
+        image: jwilder/nginx-proxy
+        container_name: panel-local-proxy
+        restart: unless-stopped
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+            - ./certs:/etc/nginx/certs
+        environment:
+            DHPARAM_BITS: 2048
+        networks:
+            default:
+                aliases:
+                    - panel.local
+    panel:
+        container_name: panel-web
+        build: .
+        command: start
+        environment: 
+            VIRTUAL_HOST: "panel.local"
+            VIRTUAL_PORT: "8080"
+            VIRTUAL_PROTO: "http"
+        ports:
+            - "8080:8080"
+        volumes:
+            - .:/usr/src/app
+        networks:
+            - local-reverse-proxy_default
+        depends_on:
+            - nginx-proxy
+
+networks: 
+  default:
+  local-reverse-proxy_default:
+
