@@ -2,13 +2,17 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
-const port = 3000
+const port = 8080
 
 const app = express();
 app.use(cors())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
+
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
 
 const server = require('http').Server(app)
 
@@ -38,9 +42,9 @@ io.on('connection', function(socket) {
     setTimeout(function() {
         console.log('disconnecting the socket ' + socket.id);
         socket.disconnect();
-    },1000);
+    }, 1000);
 })
 
-server.listen(port, host, () => {
-  console.log(`Example app listening at https://panel.local`)
+server.listen(port, () => {
+  console.log(`Example app listening at https://panel.local/`)
 })

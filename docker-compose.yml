@@ -14,7 +14,7 @@ services:
         environment:
             DHPARAM_BITS: 2048
         networks:
-            default:
+            panel-simulator_default:
                 aliases:
                     - panel.local
     panel:
@@ -29,12 +29,10 @@ services:
             - "8080:8080"
         volumes:
             - .:/usr/src/app
-        networks:
-            - local-reverse-proxy_default
         depends_on:
             - nginx-proxy
+        networks:
+            - panel-simulator_default
 
 networks: 
-  default:
-  local-reverse-proxy_default:
-
+    panel-simulator_default:

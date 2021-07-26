@@ -1,11 +1,11 @@
 # Getting started
 ## IMPORTANT
-Execute prepare.sh script to install dependencies and create certificates
+Run the script `prepare.sh`, it will install homebrew (for linux), mkcert (for linux) and generate the certificates `panel.local`.<br>
 Add the addresses to your hosts file (see [hosts](#hosts))<br>
 
 
 ## Usage
-Once the certificates are generated and you added the addresses to your hosts, you can:
+Once the certificates are generated and you added the address to your hosts, you can:
 - start the panel-simulator --> `docker-compose up` (`-d` to be able to close the terminal and still have the panel running)
 - stop the app --> `docker-compose down`
 <br>
@@ -13,15 +13,11 @@ Once the certificates are generated and you added the addresses to your hosts, y
 
 # Other
 
-## Certs
-Install `homebrew` and [`mkcert`](https://github.com/FiloSottile/mkcert) (DON'T forget this command: `mkcert -install` ) then execute the script `certs.sh` (Unix: `sh certs.sh`)<br>
-It will create a `certs` folder and files needed to use all `panel.local` urls with HTTPS <br>
-
 ## Hosts
 hosts file is usually here:
 - `/etc/hosts` for Mac & Linux
 - `C:\Windows\System32\drivers\etc\hosts` for Windows
   
-Add those addresses:
-- panel.local
+Add this line to the hosts file:
+- `127.0.0.1    panel.local`
 <br>
