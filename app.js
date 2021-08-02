@@ -34,6 +34,38 @@ io.on('connection', function(socket) {
         console.log('connection is authenticated ' + socket.id);
         socket.emit("login", server_token);
     })
+
+    socket.on('kast_register', async (data, callback) => {
+        console.log(data)
+        console.log('---')
+        const { content } = data
+        const organization = {};
+        // const organization = await Organization.findById(content.organization)
+        let response = {};
+        if (organization['token'] !== content.token) {
+          response = {
+            correlation_id: data.correlation_id,
+            type: "ERROR",
+            content: {
+              error_message: "Token does not match Organization ID"
+            }
+          }
+        } else {
+        //   const device = await Device.create({
+        //     _organization: content.organization,
+        //     hardwareID: content.id,
+        //   })
+        //   await device.save()
+          response = {
+            correlation_id: data.correlation_id,
+            type: "SUCCESS",
+            content: {
+                message: "Device registered"
+            }
+          }
+        }
+        callback(response)
+      })
    
     socket.on('disconnect', function() {
         console.log('one user disconnected ' + socket.id);
