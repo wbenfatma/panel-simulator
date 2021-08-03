@@ -16,11 +16,32 @@ app.get('/',
 io.on('connection', function(socket) {
 
     console.log('A new camera is connected, socket id: ' + socket.id);
+    
+    socket.on('register', function(data) {
 
+	// Retrieve Register request attributes
+	console.log('\nThe camera is registering ...');
+	console.log('Register JSON request:\n' + JSON.stringify(data));
+        var category = data.category;
+        var action = data.action;
+        var correlation_id = data.correlation_id;
+        var content = data.content;
+        console.log('Request category: '+category+'\nRequest action: '+action+'\nCorrelation id: '+correlation_id);
+        console.log('Register request content --> \nCamera id: '+content.camera_id+'\nOrganization Id: '+content.organization_id+'\nPassword: '+content.password+'\nRoom Id: '+content.room_id);
+
+	// Send Register response
+	const resp = {
+	    correlation_id: correlation_id,
+	    type: 'SUCCESS'
+        };
+        console.log('Register JSON response:\n' + JSON.stringify(resp));
+        socket.emit('register', resp);
+    });
+ 
     socket.on('login', function(data) {
 
 	// Retrieve Login request attributes
-	console.log('The camera is logging in ...');
+	console.log('\nThe camera is logging in ...');
 	console.log('Login JSON request:\n' + JSON.stringify(data));
         var category = data.category;
         var action = data.action;
