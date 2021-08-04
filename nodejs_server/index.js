@@ -12,6 +12,14 @@ app.get('/',
           res.sendFile(path.join(__dirname, 'index.html'));
         });
 
+// used to generate a correlation ID - for test purposes
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 io.on('connection', function(socket) {
 
     console.log('\nA new camera is connected, socket id: ' + socket.id);
@@ -60,6 +68,20 @@ io.on('connection', function(socket) {
         };
         console.log('Login JSON response:\n' + JSON.stringify(resp));
         socket.emit('login', resp);
+
+	// Send multiple requests for test purposes
+	// Move up request
+	console.log('\nStart sending requests to camera...');
+	const move_req = {
+	    category: 'camera',
+	    action: 'move',
+	    correlation_id: uuidv4(),
+	    content: {
+		direction: 'up'
+	    }
+        };
+        console.log('Move JSON request:\n' + JSON.stringify(move_req));
+        socket.emit('message', move_req);
     });
 
     socket.on('logout', function(data) {
@@ -82,6 +104,13 @@ io.on('connection', function(socket) {
         socket.emit('logout', resp);
     });
 
+    socket.on('message', function(data) {
+
+	// Retrieve Logout request attributes
+	console.log('\nThe camera sents a response ...');
+	console.log('Camera JSON response:\n' + JSON.stringify(data));
+    });
+    
     socket.on('disconnect', function() {
 	console.log('\nThe camera is now disconnected ...');
         socket.disconnect();
