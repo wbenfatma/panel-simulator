@@ -3,7 +3,6 @@ const http = require('http');
 const socketio = require('socket.io');
 const path = require('path');
 const crypto = require('crypto');
-
 const app = express();
 const server = http.Server(app);
 const io = socketio(server);
@@ -15,7 +14,7 @@ app.get('/',
 
 io.on('connection', function(socket) {
 
-    console.log('A new camera is connected, socket id: ' + socket.id);
+    console.log('\nA new camera is connected, socket id: ' + socket.id);
     
     socket.on('register', function(data) {
 
@@ -61,6 +60,31 @@ io.on('connection', function(socket) {
         };
         console.log('Login JSON response:\n' + JSON.stringify(resp));
         socket.emit('login', resp);
+    });
+
+    socket.on('logout', function(data) {
+
+	// Retrieve Logout request attributes
+	console.log('\nThe camera is logging out ...');
+	console.log('Logout JSON request:\n' + JSON.stringify(data));
+        var category = data.category;
+        var action = data.action;
+        var correlation_id = data.correlation_id;
+        var auth_token = data.auth_token;
+        console.log('Request category: '+category+'\nRequest action: '+action+'\nCorrelation id: '+correlation_id+'\nauth_token: '+auth_token);
+
+	// Send Logout response
+	const resp = {
+	    correlation_id: correlation_id,
+	    type: 'SUCCESS'
+        };
+        console.log('Logout JSON response:\n' + JSON.stringify(resp));
+        socket.emit('logout', resp);
+    });
+
+    socket.on('disconnect', function() {
+	console.log('\nThe camera is now disconnected ...');
+        socket.disconnect();
     });
 })
 
