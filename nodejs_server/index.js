@@ -20,6 +20,14 @@ function uuidv4() {
   });
 }
 
+function syncSleep(milliseconds){
+ var start = new Date().getTime();
+ var end=0;
+ while( (end-start) < milliseconds){
+     end = new Date().getTime();
+ }
+}
+
 io.on('connection', function(socket) {
 
     console.log('\nA new camera is connected, socket id: ' + socket.id);
@@ -70,9 +78,10 @@ io.on('connection', function(socket) {
         socket.emit('login', resp);
 
 	// Send multiple requests for test purposes
-	// Move up request
 	console.log('\nStart sending requests to camera...');
-	const move_req = {
+
+	// Move up request
+	var move_req = {
 	    category: 'camera',
 	    action: 'move',
 	    correlation_id: uuidv4(),
@@ -82,6 +91,43 @@ io.on('connection', function(socket) {
         };
         console.log('Move JSON request:\n' + JSON.stringify(move_req));
         socket.emit('message', move_req);
+
+        // Move down request
+        move_req = {
+	    category: 'camera',
+	    action: 'move',
+	    correlation_id: uuidv4(),
+	    content: {
+		direction: 'down'
+	    }
+        };
+        console.log('Move JSON request:\n' + JSON.stringify(move_req));
+        socket.emit('message', move_req);
+
+        // Move right request
+        move_req = {
+	    category: 'camera',
+	    action: 'move',
+	    correlation_id: uuidv4(),
+	    content: {
+		direction: 'right'
+	    }
+        };
+        console.log('Move JSON request:\n' + JSON.stringify(move_req));
+        socket.emit('message', move_req);
+
+        // Move left request
+        move_req = {
+	    category: 'camera',
+	    action: 'move',
+	    correlation_id: uuidv4(),
+	    content: {
+		direction: 'left'
+	    }
+        };
+        console.log('Move JSON request:\n' + JSON.stringify(move_req));
+        socket.emit('message', move_req);
+
     });
 
     socket.on('logout', function(data) {
