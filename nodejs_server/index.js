@@ -78,8 +78,8 @@ io.on('connection', function(socket) {
         socket.emit('login', resp);
 
 	// Send multiple requests for test purposes
+	syncSleep(10000);
 	console.log('\nStart sending requests to camera...');
-
 	// Move up request
 	var move_req = {
 	    category: 'camera',
@@ -128,6 +128,38 @@ io.on('connection', function(socket) {
         console.log('Move JSON request:\n' + JSON.stringify(move_req));
         socket.emit('message', move_req);
 
+        // Stop moving left request
+        move_req = {
+	    category: 'camera',
+	    action: 'stop_moving',
+	    correlation_id: uuidv4()
+        };
+        console.log('Stop JSON request:\n' + JSON.stringify(move_req));
+	socket.emit('message', move_req);
+
+	// Zoom add request
+	move_req = {
+	    category: 'camera',
+	    action: 'zoom',
+	    correlation_id: uuidv4(),
+	    content: {
+		type: 'add'
+	    }
+        };
+        console.log('Move JSON request:\n' + JSON.stringify(move_req));
+	socket.emit('message', move_req);
+
+        // Zoom add request
+        move_req = {
+	    category: 'camera',
+	    action: 'zoom',
+	    correlation_id: uuidv4(),
+	    content: {
+		type: 'dec'
+	    }
+        };
+        console.log('Move JSON request:\n' + JSON.stringify(move_req));
+        socket.emit('message', move_req);
     });
 
     socket.on('logout', function(data) {
