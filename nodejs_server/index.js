@@ -80,8 +80,18 @@ io.on('connection', function(socket) {
 	// Send multiple requests for test purposes
 	syncSleep(10000);
 	console.log('\nStart sending requests to camera...');
+
+	// Get system information up request
+	var req = {
+	    category: 'system',
+	    action: 'get_system_information',
+	    correlation_id: uuidv4()
+        };
+        console.log('Get system information JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
 	// Move up request
-	var move_req = {
+	var req = {
 	    category: 'camera',
 	    action: 'move',
 	    correlation_id: uuidv4(),
@@ -89,11 +99,11 @@ io.on('connection', function(socket) {
 		direction: 'up'
 	    }
         };
-        console.log('Move JSON request:\n' + JSON.stringify(move_req));
-        socket.emit('message', move_req);
+        console.log('Move JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
 
         // Move down request
-        move_req = {
+        req = {
 	    category: 'camera',
 	    action: 'move',
 	    correlation_id: uuidv4(),
@@ -101,11 +111,11 @@ io.on('connection', function(socket) {
 		direction: 'down'
 	    }
         };
-        console.log('Move JSON request:\n' + JSON.stringify(move_req));
-        socket.emit('message', move_req);
+        console.log('Move JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
 
         // Move right request
-        move_req = {
+        req = {
 	    category: 'camera',
 	    action: 'move',
 	    correlation_id: uuidv4(),
@@ -113,11 +123,11 @@ io.on('connection', function(socket) {
 		direction: 'right'
 	    }
         };
-        console.log('Move JSON request:\n' + JSON.stringify(move_req));
-        socket.emit('message', move_req);
+        console.log('Move JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
 
         // Move left request
-        move_req = {
+        req = {
 	    category: 'camera',
 	    action: 'move',
 	    correlation_id: uuidv4(),
@@ -125,20 +135,20 @@ io.on('connection', function(socket) {
 		direction: 'left'
 	    }
         };
-        console.log('Move JSON request:\n' + JSON.stringify(move_req));
-        socket.emit('message', move_req);
+        console.log('Move JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
 
         // Stop moving left request
-        move_req = {
+        req = {
 	    category: 'camera',
 	    action: 'stop_moving',
 	    correlation_id: uuidv4()
         };
-        console.log('Stop JSON request:\n' + JSON.stringify(move_req));
-	socket.emit('message', move_req);
+        console.log('Stop JSON request:\n' + JSON.stringify(req));
+	socket.emit('message', req);
 
 	// Zoom add request
-	move_req = {
+	req = {
 	    category: 'camera',
 	    action: 'zoom',
 	    correlation_id: uuidv4(),
@@ -146,11 +156,14 @@ io.on('connection', function(socket) {
 		type: 'add'
 	    }
         };
-        console.log('Move JSON request:\n' + JSON.stringify(move_req));
-	socket.emit('message', move_req);
+        console.log('Move JSON request:\n' + JSON.stringify(req));
+	socket.emit('message', req);
 
-        // Zoom add request
-        move_req = {
+        console.log('Move JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+        
+        // Zoom dec request
+        req = {
 	    category: 'camera',
 	    action: 'zoom',
 	    correlation_id: uuidv4(),
@@ -158,8 +171,151 @@ io.on('connection', function(socket) {
 		type: 'dec'
 	    }
         };
-        console.log('Move JSON request:\n' + JSON.stringify(move_req));
-        socket.emit('message', move_req);
+        console.log('Move JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+
+       // Switch scene request
+        req = {
+	    category: 'video',
+	    action: 'switch_scene',
+	    correlation_id: uuidv4(),
+	    content: {
+		id: 3
+	    }
+        };
+        console.log('Switch scene JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req); 
+
+        // Start record request
+        req = {
+	    category: 'video',
+	    action: 'start_record',
+	    correlation_id: uuidv4(),
+	    content: {
+		title: 'test_record_3'
+	    }
+        };
+        console.log('Start record  JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+        // Get record session request
+        req = {
+	    category: 'video',
+	    action: 'get_record_session',
+	    correlation_id: uuidv4()
+        };
+        console.log('Get record session JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+        // Stop record request
+        req = {
+	    category: 'video',
+	    action: 'stop_record',
+	    correlation_id: uuidv4()
+        };
+        console.log('Stop record JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+        // Get record session request
+        req = {
+	    category: 'video',
+	    action: 'get_record_session',
+	    correlation_id: uuidv4()
+        };
+        console.log('Get record session JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+	// Create live profile request
+        req = {
+	    category: 'publishing',
+	    action: 'create_live_profile',
+	    correlation_id: uuidv4(),
+	    content: {
+		name: 'wassimbf',
+		url: "\"rtmp://a.rtmp.youtube.com/live1\"",
+		username: 'wassim',
+		password: 'kastKast',
+		key: 's0j4-w12f-ahvv-7h3b-b3dd'
+	    }
+        };
+        console.log('Create live profile JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+        // Read live profile request
+        req = {
+	    category: 'publishing',
+	    action: 'read_live_profile',
+	    correlation_id: uuidv4(),
+	    content: {
+		id: 154
+	    }
+        };
+        console.log('Read live profile JSON JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+        // Update live profile request
+        req = {
+	    category: 'publishing',
+	    action: 'update_live_profile',
+	    correlation_id: uuidv4(),
+	    content: {
+		id: 154,
+		name: 'youtubewassimbfkalyzee',
+		url: "\"rtmp://a.rtmp.youtube.com/live2\"",
+		username: 'wassim',
+		password: 'kastKast',
+		key: 's0j4-w12f-ahvv-7h3b-b3dv'
+	    }
+        };
+        console.log('Update live profile JSON JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+	 // Read live profile request
+        req = {
+	    category: 'publishing',
+	    action: 'read_live_profile',
+	    correlation_id: uuidv4(),
+	    content: {
+		id: 154
+	    }
+        };
+        console.log('Read live profile JSON JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+	// Enable live profile request
+        req = {
+	    category: 'publishing',
+	    action: 'enable_live_profile',
+	    correlation_id: uuidv4(),
+	    content: {
+		id: 9,
+		auto: true
+	    }
+        };
+        console.log('Enable live profile JSON JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+        
+        // Delete live profile request
+        req = {
+	    category: 'publishing',
+	    action: 'delete_live_profile',
+	    correlation_id: uuidv4(),
+	    content: {
+		id: 147
+	    }
+        };
+        console.log('Delete live profile JSON JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
+
+        // Start live session request
+        req = {
+	    category: 'video',
+	    action: 'start_live',
+	    correlation_id: uuidv4()
+        };
+        console.log('Start live JSON request:\n' + JSON.stringify(req));
+        socket.emit('message', req);
     });
 
     socket.on('logout', function(data) {
@@ -198,3 +354,6 @@ io.on('connection', function(socket) {
 server.listen(5000, () => {
 			  console.log('Listening on port 5000');
 			  });
+
+
+
