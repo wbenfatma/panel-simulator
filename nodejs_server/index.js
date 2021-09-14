@@ -41,7 +41,7 @@ function runCameraCommandsTests(socket) {
 	correlation_id: uuidv4()
     };
     console.log('Get system information JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Move up request
     req = {
@@ -53,7 +53,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Move JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Move down request
     req = {
@@ -65,7 +65,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Move JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Move right request
     req = {
@@ -77,7 +77,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Move JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Move left request
     req = {
@@ -89,7 +89,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Move JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Stop moving left request
     req = {
@@ -98,7 +98,7 @@ function runCameraCommandsTests(socket) {
 	correlation_id: uuidv4()
     };
     console.log('Stop moving JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Zoom add request
     req = {
@@ -110,7 +110,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Zoom JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
 
     // Zoom dec request
@@ -123,7 +123,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Zoom JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Switch scene request
     req = {
@@ -135,7 +135,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Switch scene JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Start record request
     req = {
@@ -147,7 +147,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Start record  JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Get record session request
     req = {
@@ -156,7 +156,7 @@ function runCameraCommandsTests(socket) {
 	correlation_id: uuidv4()
     };
     console.log('Get record session JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Stop record request
     req = {
@@ -165,7 +165,7 @@ function runCameraCommandsTests(socket) {
 	correlation_id: uuidv4()
     };
     console.log('Stop record JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Get record session request
     req = {
@@ -174,7 +174,7 @@ function runCameraCommandsTests(socket) {
 	correlation_id: uuidv4()
     };
     console.log('Get record session JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Create live profile request
     req = {
@@ -190,7 +190,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Create live profile JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Read live profile request
     req = {
@@ -202,7 +202,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Read live profile JSON JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Update live profile request
     req = {
@@ -219,7 +219,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Update live profile JSON JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Read live profile request
     req = {
@@ -231,7 +231,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Read live profile JSON JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Enable live profile request
     req = {
@@ -244,7 +244,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Enable live profile JSON JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Delete live profile request
     req = {
@@ -256,7 +256,7 @@ function runCameraCommandsTests(socket) {
 	}
     };
     console.log('Delete live profile JSON JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 
     // Start live session request
     req = {
@@ -265,14 +265,14 @@ function runCameraCommandsTests(socket) {
 	correlation_id: uuidv4()
     };
     console.log('Start live JSON request:\n' + JSON.stringify(req));
-    socket.emit('camera', req);
+    socket.emit('camera_message', req);
 }
 
 io.on('connection', function(socket) {
 
     console.log('\nA new camera is connected, socket id: ' + socket.id);
 
-    socket.on('camera', function(data) {
+    socket.on('camera_message', function(data) {
 
 	var category = data.category;
 	var action = data.action;
@@ -292,7 +292,7 @@ io.on('connection', function(socket) {
 		type: 'SUCCESS'
 	    };
 	    console.log('Register JSON response:\n' + JSON.stringify(resp));
-	    socket.emit('camera', resp);
+	    socket.emit('camera_message', resp);
 	} else if(action == 'login') {
 	    // Retrieve Login request attributes
 	    console.log('\nThe camera is logging in ...');
@@ -309,7 +309,7 @@ io.on('connection', function(socket) {
 		}
 	    };
 	    console.log('Login JSON response:\n' + JSON.stringify(resp));
-	    socket.emit('camera', resp);
+	    socket.emit('camera_message', resp);
 	    // Send multiple requests for test purposes
 	    syncSleep(10000);
 	    console.log('\nStart sending requests to camera...');
@@ -326,7 +326,7 @@ io.on('connection', function(socket) {
 		type: 'SUCCESS'
 	    };
 	    console.log('Logout JSON response:\n' + JSON.stringify(resp));
-	    socket.emit('camera', resp);
+	    socket.emit('camera_message', resp);
 	} else {
 	    // Retrieve Logout request attributes
 	    console.log('\nThe camera sents a response ...');
